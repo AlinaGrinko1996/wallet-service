@@ -1,6 +1,6 @@
 package ua.nure.hrynko.walletservice.entities;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import ua.nure.hrynko.walletservice.enums.TransactionType;
@@ -21,7 +21,7 @@ public class Transaction {
     @Column(unique = true)
     private String transactionId;
     @ManyToOne
-    @JsonManagedReference
+    @JsonIgnore
     private Player player;
     /**
      * Enum type STRING used to not store enum in DB as numbers

@@ -76,7 +76,7 @@ class PlayerServiceImplTest {
 
     /**
      * Unit test of limited scope to check if save method is working in general
-     * Checking if method is
+     * Checking if method "save" is called
      */
     @Test
     void addTransaction() throws TransactionException {
@@ -96,6 +96,9 @@ class PlayerServiceImplTest {
         verify(transactionRepository, times(1)).save(transaction);
     }
 
+    /**
+     * Exception should be thrown if user doesn't have enough money for debit
+     */
     @Test
     void addTransactionError() {
         // given

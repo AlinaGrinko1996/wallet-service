@@ -101,8 +101,7 @@ public class PlayerServiceImpl implements PlayerService {
         newTransaction.setPlayer(player.get());
 
         playersRepository.save(player.get());
-        transactionRepository.save(newTransaction);
-        return new ResponseEntity<>(newTransaction, HttpStatus.CREATED);
+        return new ResponseEntity<>(transactionRepository.save(newTransaction), HttpStatus.CREATED);
     }
 
     private Transaction createFromDto(TransactionDTO transactionDTO) {

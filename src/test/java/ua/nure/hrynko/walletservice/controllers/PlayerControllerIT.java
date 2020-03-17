@@ -13,13 +13,9 @@ import ua.nure.hrynko.walletservice.entities.Transaction;
 import ua.nure.hrynko.walletservice.repositories.PlayersRepository;
 import ua.nure.hrynko.walletservice.repositories.TransactionRepository;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -65,14 +61,15 @@ class PlayerControllerIT {
 
     @Test
     void getTransactionsOfPlayerTest() throws Exception {
-        Long id = 1L;
+        long id = 1L;
         Set<Transaction> transactions = transactionRepository.findByPlayerId(id);
-        Set<String> ids = new HashSet<>();
+        List<String> ids = new ArrayList<>();
         transactions.forEach(transaction -> ids.add(transaction.getTransactionId()));
 
         this.mockMvc.perform(get(String.format("/player/%d/transactions", id)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect((jsonPath("$.[*].transactionId", Matchers.containsInAnyOrder(ids))));
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$.[0].transactionId", Matchers.containsString(ids.get(0))));
     }
 }

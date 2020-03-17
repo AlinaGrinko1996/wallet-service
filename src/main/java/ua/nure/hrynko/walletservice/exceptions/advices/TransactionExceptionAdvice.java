@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ua.nure.hrynko.walletservice.exceptions.TransactionException;
 
+/**
+ * Advice for returning exception message and correct httpStatus in case of error
+ */
 @ControllerAdvice
 public class TransactionExceptionAdvice {
     @ResponseBody
