@@ -1,17 +1,22 @@
 package ua.nure.hrynko.walletservice.dto;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import ua.nure.hrynko.walletservice.entities.Player;
 import ua.nure.hrynko.walletservice.enums.TransactionType;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
+/**
+ * Used to interact with user.
+ * DTO / POJO are recommended for this purpose.
+ * Validation of parameters inside.
+ */
 public class TransactionDTO {
+    @NotNull
     private String transactionId;
+    @NotNull
     private long playerId;
+    @NotNull
     private TransactionType transactionType;
+    @Positive
     private double amount;
 
     public TransactionDTO(String transactionId, long playerId, TransactionType transactionType, double amount) {
@@ -25,31 +30,15 @@ public class TransactionDTO {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
     public long getPlayerId() {
         return playerId;
-    }
-
-    public void setPlayerId(long playerId) {
-        this.playerId = playerId;
     }
 
     public TransactionType getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
-    }
-
     public double getAmount() {
         return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
     }
 }

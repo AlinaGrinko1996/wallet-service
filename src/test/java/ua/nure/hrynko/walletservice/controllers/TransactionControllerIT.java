@@ -16,26 +16,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TransactionControllerTest {
+class TransactionControllerIT {
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void addTransaction() throws Exception {
+    void addTransaction() throws Exception {
+        TransactionDTO transactionDTO = new TransactionDTO("trfcjf55ftrtr6565", 2, TransactionType.CREDIT, 4);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(transactionDTO);
         mvc.perform(MockMvcRequestBuilders
                 .post("/transaction")
-                .content(asJsonString(new TransactionDTO("trfcjf55ftrtr6565", 2, TransactionType.CREDIT, 4)))
+                .content(jsonString)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.transactionId").exists());
-    }
-
-    private static String asJsonString(final Object obj) {
-        try {
-            return new ObjectMapper().writeValueAsString(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

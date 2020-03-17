@@ -1,32 +1,41 @@
 package ua.nure.hrynko.walletservice.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import ua.nure.hrynko.walletservice.entities.Player;
-import ua.nure.hrynko.walletservice.exceptions.PlayerException;
-import ua.nure.hrynko.walletservice.repositories.PlayersRepository;
-
-import java.util.List;
+import ua.nure.hrynko.walletservice.service.PlayerService;
 
 @RestController
 public class PlayersController {
-    private PlayersRepository playersRepository;
+    private PlayerService playerService;
 
-    public PlayersController(PlayersRepository playersRepository) {
-        this.playersRepository = playersRepository;
+    public PlayersController(PlayerService playerService) {
+        this.playerService = playerService;
     }
 
     @GetMapping("/players")
-    public List<Player> getAllPlayers() {
-        return playersRepository.findAll();
+    public ResponseEntity<?> getAllPlayers() {
+        return playerService.getAllPlayers();
     }
 
-    @GetMapping("/player")
-    public Player getPlayer(@RequestParam(value = "id", defaultValue = "1") long userId) throws PlayerException {
-        return playersRepository
-                .findById(userId)
-                .orElseThrow(() -> new PlayerException("Wrong player id called!"));
+    /**
+     * Gets user data (including balance) by id
+     * @param userId id of player
+     * @return ResponseEntity<Player>> or NOT_FOUND
+     */
+    @GetMapping("/player/{id}")
+    public ResponseEntity<?> getPlayer(@PathVariable("id") long userId) {
+        return playerService.getPlayerById(userId);
+    }
+
+    /**
+     * Gets players transactions
+     * @param playerId id passed in url
+     * @return ResponseEntity<?> of transactions or NOT_FOUND
+     */
+    @GetMapping("/player/{id}/transactions")
+    public ResponseEntity<?> getTransactionsOfPlayer(@PathVariable("id") long playerId) {
+        return playerService.getAllTransactionsOfPlayer(playerId);
     }
 }
